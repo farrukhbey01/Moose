@@ -8,7 +8,7 @@ class ContactAdmin(admin.ModelAdmin):
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
+    list_display = ('id', 'name', 'is_published','view_count')
     list_display_links = ['name']
 
 

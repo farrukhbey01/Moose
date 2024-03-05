@@ -17,7 +17,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="author">
-                            <div class="img" style="background-image: url({% static 'images/person_1.jpg' %});"></div>
+                            <div class="img" style="background-image: url({{ post.author_image.url }});"></div>
                             <div class="text">
                                 <h3>Giller Moose</h3>
                                 <p>A small river named Duden flows by their place and supplies it with the necessary
@@ -50,9 +50,9 @@
                                 </a></h2>
                             <div class="icon d-flex align-items-center">
 
-                                <div class="img" style="background-image: url();"></div>
+                                <div class="img" style="background-image: url({{ post.author_image.url }});"></div>
                                 <div class="position pl-3">
-                                    <h4 class="mb-0">{{ post.name }}</h4>
+                                    <h4 class="mb-0">{{ post.author }}</h4>
                                     <span>{{  post.description | safe }}</span>
                                 </div>
                             </div>

@@ -17,7 +17,12 @@ class Post(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     description = RichTextField()
     image = models.ImageField(upload_to='post/')
+    author = models.CharField(max_length=50)
+    author_image = models.ImageField(upload_to='author/', default=True)
     is_published = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
+    view_count = models.IntegerField(default=0)
 
 
 class Contact(models.Model):
@@ -25,6 +30,7 @@ class Contact(models.Model):
     email = models.EmailField()
     subject = models.CharField(max_length=100)
     message = models.TextField()
+
 
 
 class Comments(models.Model):
