@@ -1,5 +1,4 @@
 from django.db import models
-from ckeditor.fields import RichTextField
 
 
 class Category(models.Model):
@@ -15,7 +14,7 @@ class Category(models.Model):
 class Post(models.Model):
     name = models.CharField(max_length=120)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    description = RichTextField()
+    description = models.TextField()
     image = models.ImageField(upload_to='post/')
     author = models.CharField(max_length=50)
     author_image = models.ImageField(upload_to='author/', default=True)
@@ -23,6 +22,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
     view_count = models.IntegerField(default=0)
+    comments_count = models.IntegerField(default=0)
 
 
 class Contact(models.Model):
@@ -32,14 +32,13 @@ class Contact(models.Model):
     message = models.TextField()
 
 
-
 class Comments(models.Model):
     name = models.CharField(max_length=120)
     email = models.EmailField()
     message = models.TextField()
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    is_published = models.BooleanField(default=True)
 
     def __str__(self):
         return f'{self.name} ----  {self.email}'
-# Create your models here.

@@ -9,8 +9,11 @@ CHAT_ID = '5046341911'
 
 def home(request):
     posts = Post.objects.filter(is_published=True).order_by('-view_count')[:2]
+
     d = {
-        'posts': posts
+        'posts': posts,
+        'home': 'active',
+
     }
     return render(request, 'index.html', context=d)
 
@@ -24,14 +27,12 @@ def blog(request):
         d = {
             'posts': posts,
             'blog': 'active',
-
         }
         return render(request, 'blog.html', context=d)
 
     posts = Post.objects.filter(is_published=True)
     page_obj = Paginator(posts, 2)
     d = {
-        # 'posts': posts,
         'blog': 'active',
         'posts': page_obj.get_page(page)
     }
@@ -39,26 +40,27 @@ def blog(request):
     return render(request, 'blog.html', context=d)
 
 
-def blog_detail(request, pk):
+def blog_detail_view(request, pk):
     if request.method == 'POST':
         data = request.POST
-
+        blog = Post.objects.filter(pk=pk).first()
         comment = Comments.objects.create(post_id=pk, name=data["name"], email=data["email"], message=data["message"])
         comment.save()
+        blog.comments_count += 1
+        blog.save(update_fields=['comments_count'])
         return redirect(f'/blog/{pk}/')
-    blog = Post.objects.filter(id=pk).first()
+    blog = Post.objects.filter(pk=pk).first()
     blog.view_count += 1
     blog.save(update_fields=['view_count'])
     comments = Comments.objects.filter(post_id=pk)
-    d = {'blog': blog, 'comments': comments, 'comments_count': len(comments)}
-    return render(request, 'blog_single.html', context=d)
+    return render(request, 'blog_single.html', {'blog': blog, 'comments': comments})
 
 
 def about(request):
-    return render(request, 'about.html')
+    return render(request, 'about.html', context={'about': 'active'})
 
 
-def cantact(request):
+def contact(request):
     if request.method == 'POST':
         data = request.POST
         obj = Contact.objects.create(full_name=data['name'], email=data['email'], subject=data['subject'],
@@ -74,6 +76,6 @@ def cantact(request):
         response = requests.get(url)
         print(response)
         return redirect('/contact')
-    return render(request, 'contact.html')
+    return render(request, 'contact.html', context={'contact': 'active'})
 
 # Create your views here.
