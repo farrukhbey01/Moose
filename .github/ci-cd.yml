@@ -44,7 +44,7 @@ jobs:
 
           ssh -T root@$HOST << 'EOF'
             set -e
-            cd /root/Farruh/moose
+            cd /root/Farruh/Moose
             git pull
             sudo systemctl restart farruh_moose.service 
             sudo systemctl status farruh_moose.service 
