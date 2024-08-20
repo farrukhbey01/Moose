@@ -1,4 +1,22 @@
 from django.db import models
+from django.db import models
+from django.db import models
+from django.contrib.auth import get_user_model
+
+class RequestLog(models.Model):
+    user_type = models.CharField(max_length=50, default='Nomalum shaxs')
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    requested_url = models.CharField(max_length=255)
+    request_method = models.CharField(max_length=10)
+    request_body = models.TextField(null=True, blank=True)
+    response_status_code = models.IntegerField()
+    response_body = models.TextField(null=True, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user_type} - {self.requested_url} - {self.timestamp}"
+
+
 
 
 class Category(models.Model):
